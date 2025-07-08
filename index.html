@@ -72,7 +72,7 @@
 
                 <!-- Search Bar -->
                 <div class="relative">
-                    <input type="text" id="search-input" placeholder="Şarkı ara..." class="w-full pl-10 pr-4 py-2 sm:pl-12 sm:pr-4 sm:py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg shadow-sm" autocomplete="off" data-key="searchPlaceholder">
+                    <input type="text" id="search-input" placeholder="Şarkı ara..." class="w-full pl-10 pr-4 py-2 sm:pl-12 sm:pr-4 sm:py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg shadow-sm" autocomplete="off" data-key="searchPlaceholder" autocomplete="off">>
                     <svg class="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -110,15 +110,15 @@
             <form id="add-song-form" class="space-y-4 sm:space-y-5">
                 <div>
                     <label for="song-title-input" class="block text-gray-700 text-base sm:text-lg font-medium mb-2" data-key="songTitleLabel">Şarkı Adı</label>
-                    <input type="text" id="song-title-input" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg" placeholder="Şarkı adını girin" required data-key="songTitlePlaceholder">
+                    <input type="text" id="song-title-input" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg" placeholder="Şarkı adını girin" required data-key="songTitlePlaceholder" autocomplete="off">>
                 </div>
                 <div>
                     <label for="song-artist-input" class="block text-gray-700 text-base sm:text-lg font-medium mb-2" data-key="artistNameLabel">Sanatçı Adı (Opsiyonel)</label>
-                    <input type="text" id="song-artist-input" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg" placeholder="Sanatçı adını girin" data-key="artistNamePlaceholder">
+                    <input type="text" id="song-artist-input" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg" placeholder="Sanatçı adını girin" data-key="artistNamePlaceholder" autocomplete="off">>
                 </div>
                 <div>
                     <label for="song-lyrics-input" class="block text-gray-700 text-base sm:text-lg font-medium mb-2" data-key="songLyricsLabel">Şarkı Sözleri</label>
-                    <textarea id="song-lyrics-input" rows="6" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg resize-y" placeholder="Şarkı sözlerini buraya yapıştırın" required data-key="songLyricsPlaceholder"></textarea>
+                    <textarea id="song-lyrics-input" rows="6" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg resize-y" placeholder="Şarkı sözlerini buraya yapıştırın" required data-key="songLyricsPlaceholder" autocomplete="off"></textarea>></textarea>
                 </div>
                 <button type="submit" id="modal-submit-btn" class="w-full bg-gradient-to-r from-green-500 to-teal-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out font-semibold text-base sm:text-lg" data-key="saveSongButton">
                     Şarkıyı Kaydet
