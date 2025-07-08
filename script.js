@@ -1095,3 +1095,11 @@ window.onload = () => {
   populateLanguageDropdown(); // Populate dropdown on load
   setLanguage(currentLang); // Apply initial language
 };
+
+
+// Check if 'songs' already exists in localStorage
+if (!localStorage.getItem('songs')) {
+    // If 'songs' doesn't exist, initialize it as an empty array
+    localStorage.setItem('songs', JSON.stringify([]));
+}
+
