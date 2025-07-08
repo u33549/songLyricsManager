@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şarkı Sözleri Yöneticisi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            padding: 1rem; /* Overall padding for the page */
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for modal */
+        }
+        .song-item:hover {
+            transform: translateX(5px); /* Slight hover effect for song items */
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Language Dropdown Container (Moved outside main container) -->
+    <div class="absolute top-4 right-4 z-10">
+        <button id="lang-dropdown-btn" class="bg-gray-700 text-white px-3 py-1 rounded-full text-sm hover:bg-gray-800 transition-colors duration-200 font-semibold flex items-center">
+            <span id="current-lang-display">TR</span> <!-- Will display current language flag/code -->
+            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+        <ul id="lang-dropdown-menu" class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg hidden">
+            <!-- Language options will be dynamically added here by JS -->
+        </ul>
+    </div>
+
+    <!-- Main Application Container -->
+    <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-6 lg:p-8 w-full mx-auto md:w-5/6 lg:w-3/4 xl:w-2/3 transform transition-all duration-300 ease-in-out">
+        <!-- Main Application View -->
+        <div id="main-view" class="space-y-6">
+            <!-- Search and Add Song Section -->
+            <div class="bg-gray-50 p-4 rounded-lg shadow-md mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-800" data-key="mySongsTitle">Şarkılarım</h1>
+                    <div class="flex space-x-2 items-center">
+                        <button id="export-songs-btn" class="bg-purple-400 text-white px-3 py-1 rounded-full text-sm hover:bg-purple-500 transition-colors duration-200 font-semibold" data-key="exportButton">
+                            Dışa Aktar
+                        </button>
+                        <input type="file" id="import-songs-input" accept=".json" class="hidden">
+                        <button id="import-songs-btn" class="bg-orange-400 text-white px-3 py-1 rounded-full text-sm hover:bg-orange-500 transition-colors duration-200 font-semibold" data-key="importButton">
+                            İçe Aktar
+                        </button>
+                        <button id="add-song-btn" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out font-semibold text-base sm:text-lg" data-key="addSongButton">
+                            Şarkı Ekle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Şarkı ara..." class="w-full pl-10 pr-4 py-2 sm:pl-12 sm:pr-4 sm:py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg shadow-sm" autocomplete="off" data-key="searchPlaceholder">
+                    <svg class="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Song List -->
+            <div id="song-list" class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                <!-- Song items will be injected here by JavaScript -->
+                <p class="text-center text-gray-500 text-base sm:text-lg" id="no-songs-message" data-key="noSongsMessage">Henüz şarkı yok. Yeni bir şarkı ekleyin!</p>
+            </div>
+        </div>
+
+        <!-- Lyrics View (Initially Hidden) -->
+        <div id="lyrics-view" class="hidden space-y-6">
+            <button id="back-to-list-btn" class="bg-gray-200 text-gray-700 px-4 py-2 sm:px-5 sm:py-2 rounded-full hover:bg-gray-300 transition-all duration-200 ease-in-out font-semibold flex items-center text-base sm:text-lg" data-key="backButton">
+                <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Geri Dön
+            </button>
+            <h2 id="lyrics-title" class="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-4"></h2>
+            <p id="lyrics-content" class="whitespace-pre-wrap text-gray-700 text-base sm:text-lg leading-relaxed bg-gray-50 p-4 sm:p-6 rounded-lg shadow-inner max-h-96 overflow-y-auto"></p>
+        </div>
+    </div>
+
+    <!-- Add/Edit Song Modal -->
+    <div id="add-song-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 hidden modal-overlay p-4">
+        <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md sm:max-w-xl relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold">
+                &times;
+            </button>
+            <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center" data-key="addSongModalTitle">Yeni Şarkı Ekle</h2>
+            <form id="add-song-form" class="space-y-4 sm:space-y-5">
+                <div>
+                    <label for="song-title-input" class="block text-gray-700 text-base sm:text-lg font-medium mb-2" data-key="songTitleLabel">Şarkı Adı</label>
+                    <input type="text" id="song-title-input" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg" placeholder="Şarkı adını girin" required data-key="songTitlePlaceholder">
+                </div>
+                <div>
+                    <label for="song-artist-input" class="block text-gray-700 text-base sm:text-lg font-medium mb-2" data-key="artistNameLabel">Sanatçı Adı (Opsiyonel)</label>
+                    <input type="text" id="song-artist-input" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg" placeholder="Sanatçı adını girin" data-key="artistNamePlaceholder">
+                </div>
+                <div>
+                    <label for="song-lyrics-input" class="block text-gray-700 text-base sm:text-lg font-medium mb-2" data-key="songLyricsLabel">Şarkı Sözleri</label>
+                    <textarea id="song-lyrics-input" rows="6" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg resize-y" placeholder="Şarkı sözlerini buraya yapıştırın" required data-key="songLyricsPlaceholder"></textarea>
+                </div>
+                <button type="submit" id="modal-submit-btn" class="w-full bg-gradient-to-r from-green-500 to-teal-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out font-semibold text-base sm:text-lg" data-key="saveSongButton">
+                    Şarkıyı Kaydet
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Alert/Confirm Modal -->
+    <div id="custom-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 hidden modal-overlay p-4 z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-xs sm:max-w-sm relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out text-center">
+            <h3 id="custom-modal-title" class="text-xl sm:text-2xl font-bold text-gray-800 mb-4"></h3>
+            <p id="custom-modal-message" class="text-base sm:text-lg text-gray-700 mb-6"></p>
+            <div id="custom-modal-buttons" class="flex justify-center space-x-3 sm:space-x-4">
+                <!-- Buttons will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
