@@ -2,6 +2,8 @@
 
 # Şarkı Sözleri Yöneticisi 🎵
 
+Uygulamaya buradan erişebilirsiniz: [Uygulama Bağlantısı](https://u33549.github.io/songLyricsManager/)
+
 Şarkı Sözleri Yöneticisi, favori şarkı sözlerinizi kolayca kaydetmenizi, düzenlemenizi, aramanızı ve yönetmenizi sağlayan basit ve kullanıcı dostu bir web uygulamasıdır. Tüm verileriniz tarayıcınızın yerel depolama alanında saklanır, bu sayede internet bağlantısı olmasa bile şarkı sözlerinize her zaman erişebilirsiniz.
 
 ---
@@ -87,6 +89,9 @@ Uygulamanın çok dilli yapısı `script.js` dosyasındaki `translations` nesnes
 
 
 # Song Lyrics Manager 🎵
+
+You can access the app here: [App Link](https://u33549.github.io/songLyricsManager/)
+
 
 The Song Lyrics Manager is a simple and user-friendly web application that allows you to easily save, edit, search, and manage your favorite song lyrics. All your data is stored in the browser's local storage, so you can always access your lyrics even without an internet connection.
 
